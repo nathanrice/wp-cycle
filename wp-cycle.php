@@ -94,6 +94,28 @@ function wp_cycle_admin_page() {
 
 /*
 ///////////////////////////////////////////////
+these two functions handle un-hardcoding the image URLs.
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+function wp_cycle_fixurl($url) {
+	$url = str_replace(get_bloginfo('url'), '', $url);
+	return $url;
+}
+
+function wp_cycle_urlloop($array) {
+	foreach ($array as $key => $value) {
+		if (is_array($value)) {
+			$array[$key] = wp_cycle_urlloop($array[$key]);
+		} elseif ($key == 'file_url' || $key == 'thumbnail_url') {
+			$array[$key] = wp_cycle_fixurl($value);
+		}
+	}
+	return $array;
+}
+
+
+/*
+///////////////////////////////////////////////
 this section handles uploading images, adding
 the image data to the database, deleting images,
 and deleting image data from the database.
@@ -113,6 +135,9 @@ function wp_cycle_handle_upload() {
 	//	the URL of the directory the file was loaded in
 	$upload_dir_url = str_replace(basename($file), '', $url);
 	
+	//  fix the upload URL
+	$upload_dir_url = wp_cycle_fixurl($upload_dir_url);
+
 	//	get the image dimensions
 	list($width, $height) = getimagesize($file);
 	
@@ -150,6 +175,9 @@ function wp_cycle_handle_upload() {
 	
 	//	use the timestamp as the array key and id
 	$time = date('YmdHis');
+
+	//  fix the image URL
+	$url = wp_cycle_fixurl($url);
 	
 	//	add the image data to the array
 	$wp_cycle_images[$time] = array(
@@ -212,6 +240,10 @@ function wp_cycle_images_update_check() {
 	if($wp_cycle_images['update'] == 'Added' || $wp_cycle_images['update'] == 'Deleted' || $wp_cycle_images['update'] == 'Updated') {
 		echo '<div class="updated fade" id="message"><p>Image(s) '.$wp_cycle_images['update'].' Successfully</p></div>';
 		unset($wp_cycle_images['update']);
+
+		//  fix URLs of images that are already in the db
+		$wp_cycle_images = wp_cycle_urlloop($wp_cycle_images); 
+
 		update_option('wp_cycle_images', $wp_cycle_images);
 	}
 }
@@ -444,7 +476,8 @@ function wp_cycle_shortcode($atts) {
 add_action('wp_print_scripts', 'wp_cycle_scripts');
 function wp_cycle_scripts() {
 	if(!is_admin())
-	wp_enqueue_script('cycle', WP_CONTENT_URL.'/plugins/wp-cycle/jquery.cycle.all.min.js', array('jquery'), '2.9999.5', true);
+	wp_register_script('cycle', plugins_url('jquery.cycle.all.min.js', __FILE__), array('jquery'), '1.1', false);
+	wp_enqueue_script('cycle');
 }
 
 add_action('wp_footer', 'wp_cycle_args', 15);
