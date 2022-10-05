@@ -29,7 +29,7 @@
     "description": "This plugin creates an image slideshow from the images you upload using the jQuery Cycle plugin. You can upload/delete images via the administration panel, and display the images in your theme by using the <code>wp_cycle();</code> template tag, which will generate all the necessary HTML for outputting the rotating images.",
     "author": "Nathan Rice",
     "authoruri": "http://www.nathanrice.net/",
-    "version": "0.1.13",
+    "version": "0.1.14",
     "license": "GPL-2.0+",
     "licenseuri": "http://www.gnu.org/licenses/gpl-2.0.html",
     "textdomain": "wp-cycle"
