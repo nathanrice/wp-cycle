@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: nathanrice
+Contributors: nathanrice, jrbeilke
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5553118
 Tags: slideshow, images, jquery cycle
 Requires at least: 3.0
@@ -112,3 +112,7 @@ Yes. Here are some things that I want to eventually include:
 
 = 0.1.12 =
 * Updated jQuery Cycle plugin to 2.99
+
+= 0.1.14 =
+* Updated jQuery Cycle plugin to 3.0.3
+* Fix URL for loading jquery.cycle.js to work with HTTPS and WordPress Multisite

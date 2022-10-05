@@ -3,11 +3,11 @@
 Plugin Name: WP-Cycle
 Plugin URI: http://www.nathanrice.net/plugins/wp-cycle/
 Description: This plugin creates an image slideshow from the images you upload using the jQuery Cycle plugin. You can upload/delete images via the administration panel, and display the images in your theme by using the <code>wp_cycle();</code> template tag, which will generate all the necessary HTML for outputting the rotating images.
-Version: 0.1.13
-Author: Nathan Rice
+Version: 0.1.14
+Author: Nathan Rice, Jon Beilke
 Author URI: http://www.nathanrice.net/
-
-This plugin inherits the GPL license from it's parent system, WordPress.
+License: GPL-2.0+
+License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 */
 
 /*
@@ -444,7 +444,7 @@ function wp_cycle_shortcode($atts) {
 add_action('wp_print_scripts', 'wp_cycle_scripts');
 function wp_cycle_scripts() {
 	if(!is_admin())
-	wp_enqueue_script('cycle', WP_CONTENT_URL.'/plugins/wp-cycle/jquery.cycle.all.min.js', array('jquery'), '2.9999.5', true);
+	wp_enqueue_script('cycle', plugins_url( 'jquery.cycle.all.min.js', __FILE__ ), array('jquery'), '3.0.3', true);
 }
 
 add_action('wp_footer', 'wp_cycle_args', 15);
